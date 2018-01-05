@@ -1,11 +1,11 @@
 clc, clear all
-%% lire et redimensionner l'image
+%% read and resize image
 img=imread('ssearch_test.jpg');
 img=imresize(img,[256 128]);
-%% split
+%% split the image
 [split_img,~]=bilel_split(img,1);
 nb_regions=max(max(split_img));
-%ordonner le num des régions pour faciliter le travail
+%% reorder the region numbers, makes the work much easier
 k=1;
 for i = 1 : nb_regions
     [row,col]=find(split_img==i);
@@ -14,19 +14,18 @@ for i = 1 : nb_regions
         k=k+1;
     end
 end
-%% chercher les voisins de chaque région
+%% esablish a matrix of every region's neighbors
 nb_regions=max(max(split_img));
 neighbor_matrix = find_neighbors(split_img,nb_regions);
-%% merge
+%% merge the split image
 merge_operations=999;
 merged_img=split_img;
-%si aucune opération de merge n'est effectuée l'itération précédente le
-%merge est fini
+%if no merge operations happened, that means the merging is finished
 while merge_operations > 0
     merge_operations=0;
-    %merge
+    %merge function
     [new_merged_img,merge_operations]= bilel_merge(img,merged_img,neighbor_matrix);
-    %réordonner le nbre de régions
+    %reorder region numbers, this removes "holes" in the neighbor_matrix
     k=1;
     for m = 1 : max(max(new_merged_img))
         [row,col]=find(new_merged_img==m);
@@ -35,16 +34,17 @@ while merge_operations > 0
             k=k+1;
         end
     end
-    %recherche des voisins des nouvelles régions
+    %compute the new neighbor matrix
     neighbor_matrix = find_neighbors(merged_img,k);
 end
-%% élimination des régions trop petites
+%% remove small neghbors
+% if this counter is 0, all regions are of sizes bigger than the limit
 remove_operations=999;
 while remove_operations > 0
     remove_operations=0;
-    %éliminer les petites régions
+    %small region removal function
     [remove_operations,merged_img_rr]=remove_small_regions(merged_img,100,neighbor_matrix);
-    %réordonner le nbre de régions
+    %reorder region numbers
     k=1;
     for m = 1 : max(max(new_merged_img))
         [row,col]=find(merged_img_rr==m);
@@ -53,6 +53,6 @@ while remove_operations > 0
             k=k+1;
         end
     end
-    %recherche des voisins des nouvelles régions
+    %compute the new number matrix
     neighbor_matrix = find_neighbors(merged_img,k);
 end
