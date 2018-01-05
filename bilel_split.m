@@ -1,26 +1,27 @@
 function [split_img,nb_regions]=bilel_split(img,region_id)
-%%initialisation des variables
+%%variable initialisation
 x_half=fix(size(img,1)/2);
 y_half=fix(size(img,2)/2);
-%incrémenter le oompteur de région
+%increase region id counter
 region_id=region_id+1;
 %nb_regions=region_id;
-%si la taille minimum est atteinte, affecter la région et incrémenter le
-%compteur
+%if region size is at minimum size, assign region counter and increment id
+%counter
 if (size(img,1)<=2 || size(img,2)<=1)
     split_img=region_id;
     region_id=region_id+1;
     nb_regions=region_id;
 else
-    %vérifier si un split doit se faire
+    %check if a split is necessary
     split_check=color_check(img);
-    %pas de split, affecter la région et incrémenter la région
+    %no split, assign region and increment id counter
     if split_check==0
         split_img=region_id;
         region_id=region_id+1;
         nb_regions=region_id;
     else
-    %split, diviser la région en 4 et appeler cette fonction récursivement
+    %split necessary, divide the region to 4 subregion and apply this
+    %function to each subregion
         [split_img(1:x_half,1:y_half),tmp_regions]=bilel_split(img(1:x_half,1:y_half,1:3),region_id);
         nb_regions=region_id;
         region_id=tmp_regions+1;
@@ -35,6 +36,6 @@ else
         nb_regions=region_id;
     end
 end
-%retourner le nombre de régions actuel
+%return the current number of regions
 nb_regions=region_id;
 end
