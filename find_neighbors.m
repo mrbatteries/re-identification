@@ -17,9 +17,12 @@ for i = 1 : length(r)
         n_vect=sort([padded_split(r(i)-1,c(i)),padded_split(r(i)+1,c(i)),padded_split(r(i),c(i)-1),padded_split(r(i),c(i)+1)]);
         neighbor_matrix(padded_split(r(i),c(i))).neighbors=[neighbor_matrix(padded_split(r(i),c(i))).neighbors,n_vect];
         %this is hella slow
-        neighbor_matrix(padded_split(r(i),c(i))).neighbors=unique(neighbor_matrix(padded_split(r(i),c(i))).neighbors);
+        %neighbor_matrix(padded_split(r(i),c(i))).neighbors=unique(neighbor_matrix(padded_split(r(i),c(i))).neighbors);
         neighbor_matrix(padded_split(r(i),c(i))).neighbors=neighbor_matrix(padded_split(r(i),c(i))).neighbors(neighbor_matrix(padded_split(r(i),c(i))).neighbors~=0);
         neighbor_matrix(padded_split(r(i),c(i))).neighbors=neighbor_matrix(padded_split(r(i),c(i))).neighbors(neighbor_matrix(padded_split(r(i),c(i))).neighbors~=padded_split(r(i),c(i)));
     end
+end
+for i = 1 : nb_regions
+    neighbor_matrix(i).neighbors=unique(neighbor_matrix(i).neighbors);
 end
 end

@@ -1,4 +1,4 @@
-clc, clear all
+clc, clear
 %% read and resize image
 img=imread('ssearch_test.jpg');
 img=imresize(img,[256 128]);
@@ -10,9 +10,10 @@ k=1;
 for i = 1 : nb_regions
     [row,col]=find(split_img==i);
     if (isempty(row)==0)
-        split_img(sub2ind(size(split_img),row',col'))=k;
+        index=row+(col-1)*size(img,1);
+        split_img(index)=k;
         k=k+1;
-    end
+    end 
 end
 %% esablish a matrix of every region's neighbors
 nb_regions=max(max(split_img));
@@ -30,7 +31,8 @@ while merge_operations > 0
     for m = 1 : max(max(new_merged_img))
         [row,col]=find(new_merged_img==m);
         if (isempty(row)==0)
-            merged_img(sub2ind(size(merged_img),row',col'))=k;
+            index=row+(col-1)*size(img,1);
+            merged_img(index)=k;
             k=k+1;
         end
     end
@@ -38,20 +40,16 @@ while merge_operations > 0
     neighbor_matrix = find_neighbors(merged_img,k);
 end
 %% remove small neghbors
-% if this counter is 0, all regions are of sizes bigger than the limit
-remove_operations=999;
-while remove_operations > 0
-    remove_operations=0;
-    %small region removal function
-    [remove_operations,merged_img_rr]=remove_small_regions(merged_img,100,neighbor_matrix);
-    %reorder region numbers
-    k=1;
-    for m = 1 : max(max(new_merged_img))
-        [row,col]=find(merged_img_rr==m);
-        if (isempty(row)==0)
-            merged_img(sub2ind(size(merged_img),row',col'))=k;
-            k=k+1;
-        end
+%small region removal function
+[remove_operations,merged_img_rr]=remove_small_regions(merged_img,100);
+%reorder region numbers
+k=1;
+for m = 1 : max(max(merged_img_rr))
+    [row,col]=find(merged_img_rr==m);
+    if (isempty(row)==0)
+        index=row+(col-1)*size(img,1);
+        merged_img_rr(index)=k;
+        k=k+1;
     end
     %compute the new number matrix
     neighbor_matrix = find_neighbors(merged_img,k);
