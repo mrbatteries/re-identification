@@ -1,6 +1,6 @@
-clc, clear all
+clc, clear
 %% read and resize image
-img=imread('images.jpg');
+img=imread('ssearch_test.jpg');
 img=imresize(img,[256 128]);
 %% split the image
 [split_img,~]=bilel_split(img,1);
@@ -10,9 +10,10 @@ k=1;
 for i = 1 : nb_regions
     [row,col]=find(split_img==i);
     if (isempty(row)==0)
-        split_img(sub2ind(size(split_img),row',col'))=k;
+        index=row+(col-1)*size(img,1);
+        split_img(index)=k;
         k=k+1;
-    end
+    end 
 end
 %% esablish a matrix of every region's neighbors
 nb_regions=max(max(split_img));
@@ -29,7 +30,8 @@ while merge_operations > 0
     for m = 1 : max(max(new_merged_img))
         [row,col]=find(new_merged_img==m);
         if (isempty(row)==0)
-            merged_img(sub2ind(size(merged_img),row',col'))=k;
+            index=row+(col-1)*size(img,1);
+            merged_img(index)=k;
             k=k+1;
         end
     end
@@ -44,7 +46,8 @@ k=1;
 for m = 1 : max(max(merged_img_rr))
     [row,col]=find(merged_img_rr==m);
     if (isempty(row)==0)
-        merged_img_rr(sub2ind(size(merged_img_rr),row',col'))=k;
+        index=row+(col-1)*size(img,1);
+        merged_img_rr(index)=k;
         k=k+1;
     end
 end

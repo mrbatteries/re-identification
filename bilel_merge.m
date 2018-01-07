@@ -10,7 +10,8 @@ for i = existing_regions
     [row,col]=find(split_img==i);
     region_colors=zeros(length(row),3);
     for k = 1:3
-        index=sub2ind([256 128 3],row',col',k*ones(1,length(row)));
+        %index=sub2ind([256 128 3],row,col,k*ones(length(row),1));
+        index=row+(col-1)*size(img,1)+(k-1)*size(img,1)*size(img,2); 
         region_colors(:,k)=img(index);
     end
     region_mean_colors(i,1:3)=mean(region_colors);
@@ -26,7 +27,7 @@ for i = existing_regions
         neighbors=neighbor_matrix(i).neighbors;
         [row,col]=find(split_img==i);
         %add the regions pixels to the new region map
-        merged_img(sub2ind(size(img),row',col'))=i;
+        merged_img(sub2ind(size(img),row,col))=i;
         %mark the region as treated
         region_treatment_status(i)=1;
         for j = neighbors
@@ -41,7 +42,8 @@ for i = existing_regions
                 %add the pixels of the neighbor to merge to the new map as
                 %pixels of the region being currently treated
                 [rowj,colj]=find(split_img==j);
-                merged_img(sub2ind(size(img),rowj',colj'))=i;
+                indexj=rowj+(colj-1)*size(img,1);
+                merged_img(indexj)=i;
                 %count the merged region as treated
                 region_treatment_status(j)=1;
                 %increment the merge ops counter
