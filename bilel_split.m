@@ -7,7 +7,7 @@ region_id=region_id+1;
 %nb_regions=region_id;
 %if region size is at minimum size, assign region counter and increment id
 %counter
-if (size(img,1)<=2 || size(img,2)<=1)
+if (size(img,1)<=8 || size(img,2)<=4)
     split_img=region_id;
     region_id=region_id+1;
     nb_regions=region_id;

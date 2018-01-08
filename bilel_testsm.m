@@ -23,7 +23,6 @@ merge_operations=999;
 merged_img=split_img;
 %if no merge operations happened, that means the merging is finished
 while merge_operations > 0
-    merge_operations=0;
     %merge function
     [new_merged_img,merge_operations]= bilel_merge(img,merged_img,neighbor_matrix);
     %reorder region numbers, this removes "holes" in the neighbor_matrix
@@ -51,6 +50,4 @@ for m = 1 : max(max(merged_img_rr))
         merged_img_rr(index)=k;
         k=k+1;
     end
-    %compute the new number matrix
-    neighbor_matrix = find_neighbors(merged_img,k);
 end
