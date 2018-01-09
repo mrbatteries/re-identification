@@ -9,7 +9,7 @@ for a = 1 : max(max(merged_img))
         region_sizes(a,2)=length(row);
         region_sizes(a,1)=a;
 end
-%sort the sizes vector, it makes the while condition easier
+%sort the sizes vector, it makes the while condition easierr
 [sorted_region_sizes(:,2),sorted_region_sizes(:,1)]=sort(region_sizes(:,2));
 %% removing small regions
 i=1;

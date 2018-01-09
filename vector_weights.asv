@@ -40,7 +40,7 @@ for i = 1:len-2
     region_mean_colors(i,1:3)=mean(region_colors);
 end
 %feature vector=[head r1 g1 b1 r2 b2 g2 ... r5 b5 g5 torso r1 g1 b1 ... r5
-%g5 b5 legs r1 g1 b1 ... r5 g5 b5 feet r1 g1 b1 ... r5 b5 g5]
+%g5 b5 legs r1 g1 1 ... r5 g5 b5
 feature_vector=[region_mean_colors(hr(end:-1:end-4,2),1:3);region_mean_colors(tr(end:-1:end-4,2),1:3);region_mean_colors(lr(end:-1:end-4,2),1:3);region_mean_colors(fr(end:-1:end-4,2),1:3)];
 feature_vector=reshape(feature_vector',[],1);
 feature_vector=feature_vector/255;
