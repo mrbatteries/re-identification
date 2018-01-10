@@ -44,7 +44,7 @@ feet_regions(side_regions)=feet_regions(side_regions)*0.25;
 [tr(:,1),tr(:,2)]=sort(torso_regions);
 [lr(:,1),lr(:,2)]=sort(legs_regions);
 [fr(:,1),fr(:,2)]=sort(feet_regions);
-for i = 1:len-2
+for i = 1:len
     [row,col]=find(merged_img_rr==i);
     region_colors=zeros(length(row),3);
     for k = 1:3
@@ -56,7 +56,7 @@ end
 %% construct the feature vector from the mean colors of the 5 dominant regions in each body segment
 %feature vector=[head r1 g1 b1 r2 b2 g2 ... r5 b5 g5 torso r1 g1 b1 ... r5
 %g5 b5 legs r1 g1 b1 ... r5 g5 b5 feet r1 g1 b1 ... r5 b5 g5]
-feature_vector=[region_mean_colors(hr(end:-1:end-4,2)-2,1:3);region_mean_colors(tr(end:-1:end-4,2)-2,1:3);region_mean_colors(lr(end:-1:end-4,2)-2,1:3);region_mean_colors(fr(end:-1:end-4,2)-2,1:3)];
+feature_vector=[region_mean_colors(hr(end:-1:end-4,2),1:3);region_mean_colors(tr(end:-1:end-4,2),1:3);region_mean_colors(lr(end:-1:end-4,2),1:3);region_mean_colors(fr(end:-1:end-4,2),1:3)];
 feature_vector=reshape(feature_vector',[],1);
 feature_vector=feature_vector/255;
 end
