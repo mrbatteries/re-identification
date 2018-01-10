@@ -1,10 +1,4 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This is a test function for the split merge                             %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-clc, clear
-%% read and resize image
-img=imread('ssearch_test.jpg');
-img=imresize(img,[256 128]);
+function merged_img_rr=split_merge(img)
 %% split the image
 [split_img,~]=bilel_split(img,1);
 nb_regions=max(max(split_img));
@@ -43,7 +37,7 @@ while merge_operations > 0
 end
 %% remove small neghbors
 %small region removal function
-[remove_operations,merged_img_rr]=remove_small_regions(merged_img,100);
+[~,merged_img_rr]=remove_small_regions(merged_img,100);
 %reorder region numbers
 k=1;
 for m = 1 : max(max(merged_img_rr))
@@ -53,4 +47,5 @@ for m = 1 : max(max(merged_img_rr))
         merged_img_rr(index)=k;
         k=k+1;
     end
+end
 end
